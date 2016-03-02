@@ -18,6 +18,7 @@
 #define SCROLLLOCK_STARTUP false
 
 #include "UsbKbdRptParser.h"
+#include "xt_keyboard.h"
 
 USB     Usb;
 USBHub     Hub(&Usb);
@@ -30,6 +31,8 @@ long firstBoot;
 
 void setup()
 {
+  xt_setup();
+
   firstBoot = lastGoodState = millis();
   
   initPinModes();
@@ -65,5 +68,6 @@ void loop()
     }
   }
 
+  xt_loop();
 }
 

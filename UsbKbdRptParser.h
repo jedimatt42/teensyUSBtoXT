@@ -57,15 +57,13 @@ void UsbKbdRptParser::updateModifier(uint8_t mask, uint8_t before, uint8_t after
 
 void UsbKbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after)
 {
-  updateModifier(U_RIGHTSHIFT, before, after, xt_RShift);
-  updateModifier(U_LEFTSHIFT, before, after, xt_LShift);
-  updateModifier(U_LEFTALT | U_RIGHTALT, before, after, xt_Fctn);
-  updateModifier(U_LEFTCTRL | U_RIGHTCTRL, before, after, xt_Ctrl);
+  updateModifier(U_RIGHTSHIFT, before, after, XT_RSHIFT);
+  updateModifier(U_LEFTSHIFT, before, after, XT_LSHIFT
+  updateModifier(U_RIGHTALT, before, after, XT_RALT);
+  updateModifier(U_LEFTALT, before, after, XT_LALT);
+  updateModifier(U_RIGHTCTRL, before, after, XT_RCTRL);
+  updateModifier(U_LEFTCTRL, before, after, XT_LCTRL);
 }
-
-#define ISSHIFT(X) ((U_LEFTSHIFT | U_RIGHTSHIFT) & X)
-#define ISALT(X) ((U_LEFTALT | U_RIGHTALT) & X)
-#define ISCTRL(X) ((U_LEFTCTRL | U_RIGHTCTRL) & X)
 
 void UsbKbdRptParser::OnKeyDown(uint8_t mod, uint8_t key)
 {
