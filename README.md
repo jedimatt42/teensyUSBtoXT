@@ -1,6 +1,14 @@
-tinyPS2toXTArduino
-==================
+teensyUSBtoXT
+=============
 
-Simple Arduino based PS/2 to XT keyboard converter
+Simple Arduino based USB to XT keyboard converter.
 
-Tested with Amstrad PC5086. Work in progress.
+I am targeting my:
+  Myarc Geneve 9640 Family Computer.
+
+The XT keyboard write routine was taken from 'tinyPS2toXTArduino'
+
+This will be built using the same hardware as my TI 99 USB Keys 
+adapter. (just output to a XT 5pin DIN instead of simulating the 
+TI-99/4a matrix keyboard)
+

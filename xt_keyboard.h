@@ -1,6 +1,4 @@
 
-#define ps_clk 3 /* must be interrupt pin (0 interrupt) */
-#define ps_data 4
 #define xt_clk 2
 #define xt_data 5
 
@@ -143,23 +141,10 @@ void setup()
 #ifdef DEBUG
   Serial.begin(9600) ; 
 #endif
-  pinMode(ps_clk, INPUT) ;
-  pinMode(ps_data,INPUT) ;  
   pinMode(xt_clk, OUTPUT) ; 
   pinMode(xt_data, OUTPUT) ; 
   digitalWrite(xt_clk, HIGH) ; 
   digitalWrite(xt_data, HIGH) ; 
-  attachInterrupt(0, clock, FALLING);
-}
-
-unsigned char _read()
-{
-   if (got_data)
-   {
-    got_data = 0 ; 
-    return value ; 
-  } 
-  return 0 ; 
 }
 
 void _write(unsigned char value)
@@ -198,22 +183,18 @@ void _write(unsigned char value)
 }
 
 byte i = 0 ;
-void loop() 
-{
+
+void loop() {
   label_start:
   unsigned char code = _read() ; 
-#ifdef DEBUG
-  if (code != 0) Serial.println(code, HEX) ; 
-#endif
-  if (code == BREAK_GRP1)
-  {
+
+  if (code == BREAK_GRP1) {
      delay(4) ; 
      unsigned char break_code = _read() ; 
      unsigned char i = 0 ; 
-     while (i < GROUP1_CNT)
-     {
-       if (ps2_group1[i].make == break_code)
-       { 
+
+     while (i < GROUP1_CNT) {
+       if (ps2_group1[i].make == break_code) { 
           pinMode(xt_clk, OUTPUT) ; 
           pinMode(xt_data, OUTPUT) ; 
           _write(ps2_group1[i].xt_make | 0x80) ;
@@ -223,61 +204,23 @@ void loop()
      }
     goto label_start;  
   }
-  if (code != 0)
-  {
+
+  if (code != 0) {
     unsigned char i = 0 ; 
-    while (i < GROUP1_CNT)
-    {
-      if (ps2_group1[i].make == code)
-      {
-#ifdef DEBUG
-         Serial.write(ps2_group1[i].character) ; 
-#endif
+
+    while (i < GROUP1_CNT) {
+      if (ps2_group1[i].make == code) {
+
          _write(ps2_group1[i].xt_make) ;
          break ;
       }
     i++ ; 
    }
   }
-  if (digitalRead(xt_clk) == LOW) // power-on self test
-  {
+
+  if (digitalRead(xt_clk) == LOW) // power-on self test {
     delay(10) ;
     _write(0xAA) ;
   }
 }
 
-void clock()
-{
-   if (state == INIT)
-   {
-     if (digitalRead(ps_data) == LOW)
-     {
-       state = START ; 
-       cycles = 0 ;
-       got_data = 0 ;
-       value = 0 ; 
-       return ; 
-     }
-   }
-   if (state == START)
-   {
-     value |= (digitalRead(ps_data) << cycles) ;
-     cycles++ ; 
-     if (cycles == 8) state = PARITY ;
-     return ;  
-   }
-   if (state == PARITY)
-   {
-     state = STOP ; 
-     return ; 
-   }
-   if (state == STOP)
-   {
-     if (digitalRead(ps_data) == HIGH)
-     {
-       state = INIT ; 
-       got_data = 1 ; 
-       return ; 
-     }
-   }  
-}
