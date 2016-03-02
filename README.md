@@ -12,3 +12,4 @@ This will be built using the same hardware as my TI 99 USB Keys
 adapter. (just output to a XT 5pin DIN instead of simulating the 
 TI-99/4a matrix keyboard)
 
+See [XT Scan Codes](http://www.quadibloc.com/comp/scan.htm) for encoding details.
