@@ -23,6 +23,10 @@ void xt_break(unsigned char value) {
   xt_write(0x80 ^ value);
 }
 
+void xt_make(unsigned char value) {
+  xt_write(value);
+}
+
 void xt_write(unsigned char value) { 
    while (digitalRead(xt_clk) != HIGH) ; 
 

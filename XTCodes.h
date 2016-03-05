@@ -14,7 +14,7 @@
 #define XT_NUM0 0x0B
 
 #define XT_HYPHEN 0x0C
-#define XT_EQUALS 0x0D
+#define XT_EQUAL 0x0D
 #define XT_BACKSPACE 0x0E
 
 #define XT_TAB 0x0F
