@@ -3,6 +3,8 @@ teensyUSBtoXT
 
 Simple Arduino based USB to XT keyboard converter.
 
+### None of this is tested yet!
+
 I am targeting my:
   Myarc Geneve 9640 Family Computer.
 
