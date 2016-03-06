@@ -37,7 +37,7 @@ void UsbKbdRptParser::setKeyLocks(HID* hid, boolean numLock, boolean capsLock, b
   }
   if (capsLock) {
     kbdLockingKeys.kbdLeds.bmCapsLock = 1;
-    *tk_Alpha = 1;
+    setXtKeyState(XT_CAPS_LOCK, true);
   }
   if (scrollLock) {
     kbdLockingKeys.kbdLeds.bmScrollLock = 1;
@@ -59,7 +59,7 @@ void UsbKbdRptParser::updateModifier(uint8_t mask, uint8_t before, uint8_t after
 
 void UsbKbdRptParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
   updateModifier(U_RIGHTSHIFT, before, after, XT_RSHIFT);
-  updateModifier(U_LEFTSHIFT, before, after, XT_LSHIFT
+  updateModifier(U_LEFTSHIFT, before, after, XT_LSHIFT);
   updateModifier(U_RIGHTALT, before, after, XT_RALT);
   updateModifier(U_LEFTALT, before, after, XT_LALT);
   updateModifier(U_RIGHTCTRL, before, after, XT_RCTRL);
@@ -88,7 +88,7 @@ void UsbKbdRptParser::setXtKeyState(uint16_t xtkey, boolean make) {
 }
 
 void UsbKbdRptParser::handleKey(uint8_t usbkey, boolean state) {
-  switch(key) {
+  switch(usbkey) {
     case U_BACKQUOTE: 
       setXtKeyState(XT_BACKQUOTE, state); break;
     case U_OPENSQUARE: 
@@ -103,8 +103,6 @@ void UsbKbdRptParser::handleKey(uint8_t usbkey, boolean state) {
       setXtKeyState(XT_HYPHEN, state); break;
     case U_QUOTE:
       setXtKeyState(XT_QUOTE, state); break;
-    case U_BACKQUOTE:
-      setXtKeyState(XT_BACKQUOTE, state); break;
     case U_EQUAL:
       setXtKeyState(XT_EQUAL, state); break;
     case U_SEMICOLON:
@@ -127,8 +125,6 @@ void UsbKbdRptParser::handleKey(uint8_t usbkey, boolean state) {
       setXtKeyState(XT_UP, state); break;
     case U_DOWNARROW: 
       setXtKeyState(XT_DOWN, state); break;
-    case U_QUOTE:
-      setXtKeyState(XT_QUOTE, state); break;
     case U_HOME:
       setXtKeyState(XT_HOME, state); break;
     case U_END:
@@ -215,13 +211,13 @@ void UsbKbdRptParser::handleKey(uint8_t usbkey, boolean state) {
       setXtKeyState(XT_NUMPAD_0, state); break;
     case U_NUMPAD_PERIOD:
       setXtKeyState(XT_NUMPAD_PERIOD, state); break;
-    case U_NUMPAD_SLASH:
-      setXtKeyState(XT_SLASH, state); break;
+    //case U_NUMPAD_SLASH:
+    //  setXtKeyState(XT_SLASH, state); break;
     case U_NUMSLASH:
       setXtKeyState(XT_SLASH, state); break;
     case U_NUMPAD_STAR:
       // This needs to be shift-8.
-      setXtKeyState(XT_8, state); break;
+      setXtKeyState(XT_NUM8, state); break;
     case U_NUMPAD_HYPHEN:
       setXtKeyState(XT_NUMPAD_HYPHEN, state); break;
     case U_NUMPAD_PLUS:

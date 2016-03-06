@@ -35,10 +35,6 @@ void setup()
 
   firstBoot = lastGoodState = millis();
   
-  initPinModes();
-  setColumnInterrupts();
-  initData();
-
   // Wait for keyboard to be up
   while (Usb.Init() == -1)
     delay( 20 );

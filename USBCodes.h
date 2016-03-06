@@ -9,7 +9,6 @@
 #define U_SLASH 0x38
 #define U_HYPHEN 0x2D
 #define U_QUOTE 0x34
-#define U_BACKQUOTE 0x35
 #define U_EQUAL 0x2E
 #define U_SEMICOLON 0x33
 #define U_ENTER 0x28
@@ -21,7 +20,6 @@
 #define U_RIGHTARROW 0x4F
 #define U_UPARROW 0x52
 #define U_DOWNARROW 0x51
-#define U_QUOTE 0x34
 #define U_HOME 0x4A
 #define U_END 0x4D
 
@@ -77,7 +75,7 @@
 #define U_NUMPAD_9 0x61
 #define U_NUMPAD_0 0x62
 #define U_NUMPAD_PERIOD 0x63
-#define U_NUMPAD_SLASH 0x31
+// #define U_NUMPAD_SLASH 0x31
 #define U_NUMSLASH 0x54
 #define U_NUMPAD_STAR 0x55
 #define U_NUMPAD_HYPHEN 0x56

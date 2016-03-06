@@ -1,14 +1,18 @@
 #ifndef _XT_KEYBOARD_H
 #define _XT_KEYBOARD_H
 
-#define xt_clk 2
-#define xt_data 5
+#define xt_clk 0
+#define xt_data 1
+
+void xt_write(unsigned char value);
 
 void xt_setup() {
-  pinMode(xt_clk, OUTPUT) ; 
-  pinMode(xt_data, OUTPUT) ; 
-  digitalWrite(xt_clk, HIGH) ; 
-  digitalWrite(xt_data, HIGH) ; 
+  pinMode(xt_clk, OUTPUT); 
+  pinMode(xt_data, OUTPUT); 
+  digitalWrite(xt_clk, HIGH); 
+  digitalWrite(xt_data, LOW);
+  pinMode(xt_clk, INPUT);
+  pinMode(xt_data, INPUT); 
 }
 
 void xt_loop() {
@@ -19,17 +23,21 @@ void xt_loop() {
   }
 }
 
-void xt_break(unsigned char value) {
-  xt_write(0x80 ^ value);
+void xt_waitForCts() {
+  while (digitalRead(xt_clk) == LOW || digitalRead(xt_data) == LOW) {
+    delayMicroseconds(5);
+  }
 }
 
-void xt_make(unsigned char value) {
-  xt_write(value);
+void xt_sendBit(boolean bit) {
+  digitalWrite(xt_data, bit ? HIGH : LOW);
+  digitalWrite(xt_clk, HIGH);
+  delayMicroseconds(55);
+  digitalWrite(xt_clk, LOW);
 }
 
 void xt_write(unsigned char value) { 
-   while (digitalRead(xt_clk) != HIGH) ; 
-
+   
    unsigned char bits[8] ;
    byte p = 0 ; 
    byte j = 0 ;
@@ -40,29 +48,37 @@ void xt_write(unsigned char value) {
      value = value >> 1 ; 
    }
 
-   digitalWrite(xt_clk, LOW) ; 
-   digitalWrite(xt_data, HIGH) ; 
-   delayMicroseconds(120) ; 
-   digitalWrite(xt_clk, HIGH) ; 
-   delayMicroseconds(66) ;
-   digitalWrite(xt_clk, LOW) ; 
-   delayMicroseconds(30) ;
-   digitalWrite(xt_clk, HIGH) ; 
+   xt_waitForCts();
+
+   pinMode(xt_clk, OUTPUT);
+   pinMode(xt_data, OUTPUT);
+
+   xt_sendBit(0);
+   xt_sendBit(1);
+      
    byte i = 0 ; 
 
    for (i=0; i < 8; i++) {
-      digitalWrite(xt_clk, HIGH) ; 
-      digitalWrite(xt_data, bits[p]) ; 
-      delayMicroseconds(95) ;
-      digitalWrite(xt_clk, LOW) ;
-      digitalWrite(xt_data, LOW) ; 
+      xt_sendBit(bits[p]);
       p++ ; 
    } 
 
    digitalWrite(xt_clk, HIGH) ; 
-   digitalWrite(xt_data, LOW) ;  
-   delay(1) ;
+   digitalWrite(xt_data, HIGH) ;  
+   
+   pinMode(xt_clk, INPUT);
+   pinMode(xt_data, INPUT);
 }
+
+void xt_break(unsigned char value) {
+  xt_write(0x80 | value);
+}
+
+void xt_make(unsigned char value) {
+  xt_write(value);
+}
+
+
 
 #endif
 
