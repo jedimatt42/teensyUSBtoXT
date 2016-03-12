@@ -1,6 +1,11 @@
 #ifndef _XT_KEYBOARD_H
 #define _XT_KEYBOARD_H
 
+#include <QueueArray.h>
+
+QueueArray<unsigned char> xt_keybuffer;
+boolean selftest = true;
+
 #define xt_clk 0
 #define xt_data 1
 
@@ -17,16 +22,25 @@ void xt_setup() {
 
 void xt_loop() {
   // Respond to power-on self test
-  if (digitalRead(xt_clk) == LOW) {
+  if (selftest && digitalRead(xt_clk) == LOW) {
     delay(10);
     xt_write(0xAA);
+    selftest = false;
+  } else {
+    noInterrupts();
+    while(!xt_keybuffer.isEmpty()) {
+      unsigned char keycode = xt_keybuffer.dequeue();
+      xt_write(keycode);      
+    }
+    interrupts();
   }
 }
 
 void xt_waitForCts() {
   while (digitalRead(xt_clk) == LOW || digitalRead(xt_data) == LOW) {
-    delayMicroseconds(5);
+    delayMicroseconds(15);
   }
+  delayMicroseconds(50);
 }
 
 void xt_sendBit(boolean bit) {
@@ -34,6 +48,7 @@ void xt_sendBit(boolean bit) {
   digitalWrite(xt_clk, HIGH);
   delayMicroseconds(55);
   digitalWrite(xt_clk, LOW);
+  delayMicroseconds(30);
 }
 
 void xt_write(unsigned char value) { 
@@ -53,7 +68,6 @@ void xt_write(unsigned char value) {
    pinMode(xt_clk, OUTPUT);
    pinMode(xt_data, OUTPUT);
 
-   xt_sendBit(0);
    xt_sendBit(1);
       
    byte i = 0 ; 
@@ -63,19 +77,23 @@ void xt_write(unsigned char value) {
       p++ ; 
    } 
 
-   digitalWrite(xt_clk, HIGH) ; 
-   digitalWrite(xt_data, HIGH) ;  
+   digitalWrite(xt_clk, HIGH); 
+   digitalWrite(xt_data, HIGH);  
    
    pinMode(xt_clk, INPUT);
    pinMode(xt_data, INPUT);
 }
 
 void xt_break(unsigned char value) {
-  xt_write(0x80 | value);
+  noInterrupts();
+  xt_keybuffer.enqueue(0x80 | value);
+  interrupts();
 }
 
 void xt_make(unsigned char value) {
-  xt_write(value);
+  noInterrupts();
+  xt_keybuffer.enqueue(value);
+  interrupts();
 }
 
 

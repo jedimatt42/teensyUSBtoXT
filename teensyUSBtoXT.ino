@@ -1,4 +1,3 @@
-
 #include <hidboot.h>
 #include <usbhub.h>
 
