@@ -35,11 +35,7 @@ This might server a general purpose, but I have no XT driven devices beyond my G
 
 ### Issues
 
-I did not implement any buffering yet in the adapter. XT keyboards typically have a small buffer. Presently you must type slowly enough for this to work. I will implement a small buffer to combat that, as well as attempt to improve the output frequency.
-
 I have not paid any attention to caps-lock and other lock keys as of yet. 
 
-Some XT keys are horribly complex when using a 101-key style keyboard. They have to change numlock state and act like the numpad keys, and then restore numlock state. 
-
-I'm having trouble comprehending what the reference material says to do with Pause,Break,Print Screen and SysRq. But I'll figure it out. 
+Some XT keys are rather complex when using a 101-key style keyboard. They have to change numlock state and act like the numpad keys, and then restore numlock state. 
 
