@@ -216,8 +216,7 @@ void UsbKbdRptParser::handleKey(uint8_t usbkey, boolean state) {
     case U_NUMSLASH:
       setXtKeyState(XT_SLASH, state); break;
     case U_NUMPAD_STAR:
-      // This needs to be shift-8.
-      setXtKeyState(XT_NUM8, state); break;
+      setXtKeyState(XT_NUMPAD_ASTERISK, state); break;
     case U_NUMPAD_HYPHEN:
       setXtKeyState(XT_NUMPAD_HYPHEN, state); break;
     case U_NUMPAD_PLUS:
