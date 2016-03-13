@@ -37,7 +37,6 @@ void UsbKbdRptParser::setKeyLocks(HID* hid, boolean numLock, boolean capsLock, b
   }
   if (capsLock) {
     kbdLockingKeys.kbdLeds.bmCapsLock = 1;
-    setXtKeyState(XT_CAPS_LOCK, true);
   }
   if (scrollLock) {
     kbdLockingKeys.kbdLeds.bmScrollLock = 1;
@@ -75,9 +74,9 @@ void UsbKbdRptParser::OnKeyUp(uint8_t mod, uint8_t key) {
 }
 
 void UsbKbdRptParser::setXtKeyState(uint16_t xtkey, boolean make) {
-  uint8_t prefix = (uint8_t) (xtkey >> 8);
+  uint8_t prefix = (uint8_t) (0xFF & (xtkey >> 8));
   if (prefix) {
-    xt_write(prefix);
+    xt_make(prefix);
   }
 
   if (make) {
@@ -86,6 +85,8 @@ void UsbKbdRptParser::setXtKeyState(uint16_t xtkey, boolean make) {
     xt_break((uint8_t)(xtkey & 0xFF));
   }
 }
+
+#define NUMLOCK(X,Y) (kbdLockingKeys.kbdLeds.bmNumLock?X:Y)  
 
 void UsbKbdRptParser::handleKey(uint8_t usbkey, boolean state) {
   switch(usbkey) {
@@ -190,31 +191,29 @@ void UsbKbdRptParser::handleKey(uint8_t usbkey, boolean state) {
     case U_NUM0: 
       setXtKeyState(XT_NUM0, state); break;
     case U_NUMPAD_1:
-      setXtKeyState(XT_NUMPAD_1, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM1,XT_NUMPAD_1), state); break;
     case U_NUMPAD_2:
-      setXtKeyState(XT_NUMPAD_2, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM2,XT_NUMPAD_2), state); break;
     case U_NUMPAD_3:
-      setXtKeyState(XT_NUMPAD_3, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM3,XT_NUMPAD_3), state); break;
     case U_NUMPAD_4:
-      setXtKeyState(XT_NUMPAD_4, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM4,XT_NUMPAD_4), state); break;
     case U_NUMPAD_5:
-      setXtKeyState(XT_NUMPAD_5, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM5,XT_NUMPAD_5), state); break;
     case U_NUMPAD_6:
-      setXtKeyState(XT_NUMPAD_6, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM6,XT_NUMPAD_6), state); break;
     case U_NUMPAD_7:
-      setXtKeyState(XT_NUMPAD_7, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM7,XT_NUMPAD_7), state); break;
     case U_NUMPAD_8:
-      setXtKeyState(XT_NUMPAD_8, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM8,XT_NUMPAD_8), state); break;
     case U_NUMPAD_9:
-      setXtKeyState(XT_NUMPAD_9, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM9,XT_NUMPAD_9), state); break;
     case U_NUMPAD_0:
-      setXtKeyState(XT_NUMPAD_0, state); break;
+      setXtKeyState(NUMLOCK(XT_NUM0,XT_NUMPAD_0), state); break;
     case U_NUMPAD_PERIOD:
-      setXtKeyState(XT_NUMPAD_PERIOD, state); break;
-    //case U_NUMPAD_SLASH:
-    //  setXtKeyState(XT_SLASH, state); break;
+      setXtKeyState(NUMLOCK(XT_PERIOD,XT_NUMPAD_PERIOD), state); break;
     case U_NUMSLASH:
-      setXtKeyState(XT_SLASH, state); break;
+      setXtKeyState(XT_NUMPAD_SLASH, state); break;
     case U_NUMPAD_STAR:
       setXtKeyState(XT_NUMPAD_ASTERISK, state); break;
     case U_NUMPAD_HYPHEN:

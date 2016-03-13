@@ -2,6 +2,7 @@
 #define _XT_CODES_H
 
 #define XT_CAPS_LOCK 0x3A
+#define XT_NUM_LOCK 0x45
 
 #define XT_ESC 0x01
 #define XT_NUM1 0x02
@@ -90,6 +91,7 @@
 #define XT_NUMPAD_PERIOD 0x53
 #define XT_NUMPAD_HYPHEN 0x4A
 #define XT_NUMPAD_ASTERISK 0x37
+#define XT_NUMPAD_SLASH 0xE035
 #define XT_NUMPAD_0 0x52
 #define XT_NUMPAD_1 0x4F
 #define XT_NUMPAD_2 0x50
