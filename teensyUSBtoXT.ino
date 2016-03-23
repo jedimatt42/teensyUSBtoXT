@@ -30,8 +30,6 @@ long firstBoot;
 
 void setup()
 {
-  xt_setup();
-
   firstBoot = lastGoodState = millis();
   
   // Wait for keyboard to be up
@@ -50,8 +48,7 @@ void loop()
   uint8_t state = Usb.getUsbTaskState();
   
   if (state != USB_STATE_RUNNING) {
-    long rightnow = loopMillis;
-    if ( (rightnow - lastGoodState) > 5000 ) {
+    if ( (loopMillis - lastGoodState) > 5000 ) {
       CPU_RESTART;
     }
   } else {
@@ -60,9 +57,11 @@ void loop()
       // Set numlock and capslock on, leave scroll lock off.
       Prs.setKeyLocks(&HidKeyboard, NUMLOCK_STARTUP, CAPSLOCK_STARTUP, SCROLLLOCK_STARTUP);
       firstBoot = 0; 
+      xt_setup();
     }
   }
-
-  xt_loop();
+  if (firstBoot == 0) {
+    xt_loop();
+  }
 }
 
