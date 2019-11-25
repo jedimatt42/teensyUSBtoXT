@@ -13,6 +13,12 @@ Basic, 101-key USB-Keyboard to XT mapping is complete and functioning.
 
 This uses a Teensy 3.2 microcontroller, and a UHS mini pro ( USB Host Shield mini ) to process incoming usb keyboard interactions and output the XT keyboard signals. 
 
+I've used Teensy 3.1 and 3.2 boards, and the [www.duinofun.com USB mini v2.0.](https://smile.amazon.com/HiLetgo-Development-Compatible-Interface-Arduino/dp/B01EWW9R1E/ref=sr_1_fkmr1_1?keywords=usb+mini+v2.0+host+shield&qid=1574724973&sr=8-1-fkmr1)
+
+The TI 99 USB Keys pcboard can be used. The [schematic](https://github.com/jedimatt42/TI-99-usb-keys/blob/master/schematic.pdf) will work, you just don't need the 15 pins going to the TI-99/4A matrix keyboard.  You don't have to use the pcboard, as there are far fewer wires with this.. But you should review my project page for illustrations on getting the usb host shield to provide +5v to the usb keyboard: [hardware page](http://ti994a.cwfk.net/TiUsbKeys.html)
+
+Chris Schnieder has also developed a pcboard with a 5 Pin DIN jack, so you can just use a 5 Pin DIN patch cable. See -> [here](http://shift838.99er.net/atxtusbkeys.html)
+
 I am targeting my:
   Myarc Geneve 9640 Family Computer.
 
